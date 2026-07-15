@@ -9,12 +9,16 @@
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
     "build": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
+    "typecheck": "tsc --noEmit --incremental false",
     "test": "npm run test:unit && npm run build && node --test tests/rendered-html.test.mjs",
-    "test:unit": "node --experimental-strip-types --test tests/domain/*.test.ts tests/content/*.test.ts tests/ui/*.test.ts",
+    "test:unit": "node --experimental-strip-types --test tests/domain/*.test.ts tests/content/*.test.ts tests/ui/*.test.ts tests/scripts/*.test.ts",
     "test:domain": "node --experimental-strip-types --test tests/domain/*.test.ts",
     "test:content": "node --experimental-strip-types --test tests/content/*.test.ts",
     "check:content": "node --experimental-strip-types scripts/check-content.ts",
+    "check:file-lengths": "node --experimental-strip-types scripts/check-file-lengths.ts",
+    "check:release": "node --experimental-strip-types scripts/check-release.ts",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "verify": "npm run typecheck && npm run lint && npm run check:file-lengths && npm run check:content && npm run check:release && npm test",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {

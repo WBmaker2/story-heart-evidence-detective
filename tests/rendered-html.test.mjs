@@ -26,6 +26,7 @@ test("server-renders the Korean evidence detective start experience", async () =
   assert.match(html, /마음은 하나로만 읽히지 않아요/);
   assert.match(html, /연습 사건 시작/);
   assert.match(html, /업데이트 내역/);
+  assert.doesNotMatch(html, /정답|오답|점수|correct answer|score/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Your site is taking shape/i);
 });
 
