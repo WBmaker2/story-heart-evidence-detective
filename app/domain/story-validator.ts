@@ -137,7 +137,7 @@ export function validateStoryBank(bank: StoryBank): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
   if (bank.schemaVersion !== 1 || !bank.contentVersion) issues.push(issue("story-bank", "bank-version", "schema/content version"));
   if (bank.cases.length !== 6) issues.push(issue("story-bank", "case-count", `${bank.cases.length}`));
-  if (bank.registry.minds.length < 12 || bank.registry.minds.length > 14) issues.push(issue("story-bank", "mind-count", `${bank.registry.minds.length}`));
+  if (bank.registry.minds.length > 14) issues.push(issue("story-bank", "mind-count", `${bank.registry.minds.length}`));
   const allCases = [bank.tutorial, ...bank.cases];
   allCases.forEach((caseData) => issues.push(...validateCase(caseData, bank.registry)));
   const actualIds = allCases.map((item) => item.id);

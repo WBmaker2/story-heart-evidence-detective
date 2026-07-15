@@ -108,6 +108,19 @@ test("student evidence order does not change review or sentence order", () => {
   );
 });
 
+test("investigation sentence joins quoted clues without a hard-coded particle", () => {
+  const reading = caseData.reviewedReadings[0];
+  const pair = reading.reviewedEvidencePairs[0].evidenceCardIds;
+  const sentence = buildInvestigationSentence(
+    { mindId: reading.mindId, evidenceCardIds: pair },
+    caseData,
+    storyBank.registry,
+  );
+
+  assert.match(sentence, /” 두 가지가 단서예요\.$/u);
+  assert.doesNotMatch(sentence, /”과 “/u);
+});
+
 test("two different evidence cards of the same kind can be completed", () => {
   const sameKindCards = caseData.evidenceCards.filter((card) => card.kind === "action");
   assert.ok(sameKindCards.length >= 2);

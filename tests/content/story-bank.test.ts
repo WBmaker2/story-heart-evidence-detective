@@ -33,6 +33,25 @@ test("every case meets the public content counts and metadata contract", () => {
   }
 });
 
+test("a smaller referenced mind registry is not rejected solely for its count", () => {
+  const smaller = structuredClone(storyBank);
+  smaller.registry.minds = smaller.registry.minds.slice(0, 4);
+  const mindIds = smaller.registry.minds.map((mind) => mind.id);
+  assert.equal(mindIds.length, 4);
+
+  for (const item of [smaller.tutorial, ...smaller.cases]) {
+    item.candidateMindIds = [mindIds[0], mindIds[1], mindIds[2], mindIds[3]];
+    item.reviewedReadings.forEach((reading, index) => {
+      reading.mindId = mindIds[index];
+    });
+  }
+
+  assert.equal(
+    validateStoryBank(smaller).some((issue) => issue.rule === "mind-count"),
+    false,
+  );
+});
+
 test("update history records the first development release", () => {
   assert.deepEqual(updateHistory[0], {
     date: "2026-07-15",
