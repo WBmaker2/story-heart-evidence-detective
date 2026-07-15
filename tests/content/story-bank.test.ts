@@ -61,8 +61,8 @@ test("update history keeps the development release and leads with the newest imp
   });
   assert.deepEqual(updateHistory[0], {
     date: "2026-07-15",
-    version: "1.1.4",
+    version: "1.1.5",
     kind: "개선",
-    summary: "수사 문장을 자연스럽게 다듬고 문장별 읽기와 워커 요청 점검을 더 정확하게 했어요.",
+    summary: "인터넷에서 바로 이용할 수 있도록 GitHub Pages 자동 배포를 연결했어요.",
   });
 });

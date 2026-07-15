@@ -2,6 +2,9 @@
 
 이야기 속 행동·표정·대사를 단서로 인물의 마음을 짐작하고, 한 장면에 여러 해석이 가능함을 살펴보는 한국어 읽기 웹앱입니다.
 
+- 공개 앱: https://wbmaker2.github.io/story-heart-evidence-detective/
+- GitHub 저장소: https://github.com/WBmaker2/story-heart-evidence-detective
+
 ## 활동과 해석 모델
 
 연습 사건 뒤에 여섯 개의 고정 사건을 차례로 읽습니다. 마음 하나와 서로 다른 단서 카드 두 장을 연결하면 수사 문장이 만들어지고, 제출 뒤에는 학생 친화적 안내와 다른 해석 하나가 나타납니다. 마지막 화면은 사건 완료와 사용한 단서 종류만 보여 줍니다.
@@ -35,6 +38,16 @@ npm run build
 ```
 
 `verify`는 타입 검사, ESLint, 500줄 미만 파일 제한, 콘텐츠·본문 앵커 무결성, 개인정보·외부 요청·학생용 표현·스타터 잔여물 정적 검사, 단위 테스트, 빌드, 서버 렌더링 HTML 검사를 순서대로 수행합니다. 개별 명령은 `npm run typecheck`, `npm run lint`, `npm run test`, `npm run check:content`, `npm run check:file-lengths`, `npm run check:release`입니다.
+
+## GitHub Pages 배포
+
+`main` 브랜치에 푸시하면 GitHub Actions가 기존 검증을 실행한 뒤 Next.js 정적 내보내기 결과를 GitHub Pages에 게시합니다.
+
+```bash
+npm run build:pages
+```
+
+Pages 전용 빌드는 저장소 하위 경로를 `basePath`로 적용하며 `out/` 폴더에 정적 HTML과 자산을 생성합니다.
 
 ## 출시 전 수동 검증 — 미완료
 
