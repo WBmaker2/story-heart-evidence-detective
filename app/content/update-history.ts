@@ -8,6 +8,12 @@ export interface UpdateHistoryEntry {
 export const updateHistory: readonly UpdateHistoryEntry[] = [
   {
     date: "2026-07-15",
+    version: "1.1.0",
+    kind: "개선",
+    summary: "읽기 방식 선택, 단서 연결, 여러 해석 검토, 여섯 사건 기록 화면을 완성했어요.",
+  },
+  {
+    date: "2026-07-15",
     version: "1.0.0",
     kind: "개발",
     summary: "이야기 7편과 근거 기반 복수 해석 판정 자료를 처음 만들었어요.",
