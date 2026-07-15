@@ -92,10 +92,12 @@ test("product audit accepts local in-memory code and required same-origin worker
     file(
       "worker/index.ts",
       [
+        "async function fetchSameOriginAsset(path: string, request: Request, env: Env) {",
         "const requestUrl = new URL(request.url);",
         "const assetUrl = new URL(path, requestUrl);",
         "if (assetUrl.origin !== requestUrl.origin) return new Response('Not found');",
-        "env.ASSETS.fetch(new Request(assetUrl));",
+        "return env.ASSETS.fetch(new Request(assetUrl));",
+        "}",
         "handler.fetch(request, env, ctx);",
       ].join(" "),
     ),
@@ -103,4 +105,29 @@ test("product audit accepts local in-memory code and required same-origin worker
   ]);
 
   assert.deepEqual(issues, []);
+});
+
+test("one guarded asset fetch cannot hide another unguarded asset fetch", () => {
+  const issues = auditProductSource([
+    file(
+      "worker/mixed-asset-fetches.ts",
+      [
+        "async function fetchSameOriginAsset(path: string, request: Request, env: Env) {",
+        "  const requestUrl = new URL(request.url);",
+        "  const assetUrl = new URL(path, requestUrl);",
+        "  if (assetUrl.origin !== requestUrl.origin) return new Response('Not found');",
+        "  return env.ASSETS.fetch(new Request(assetUrl));",
+        "}",
+        "export function unsafe(path: string, request: Request, env: Env) {",
+        "  const assetUrl = new URL(path, request.url);",
+        "  return env.ASSETS.fetch(new Request(assetUrl));",
+        "}",
+      ].join("\n"),
+    ),
+  ]);
+
+  assert.deepEqual(
+    issues.map((issue) => [issue.path, issue.rule]),
+    [["worker/mixed-asset-fetches.ts", "external-runtime-request"]],
+  );
 });

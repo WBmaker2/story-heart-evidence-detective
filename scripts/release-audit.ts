@@ -28,6 +28,7 @@ const ALLOWED_WORKER_FETCHES = [
   /\bASSETS\s*:\s*\{\s*fetch\s*\(/g,
 ];
 const SAME_ORIGIN_ASSET_FETCH = /env\s*\.\s*ASSETS\s*\.\s*fetch\s*\(\s*new\s+Request\s*\(\s*assetUrl\s*\)\s*\)/g;
+const NAMED_FUNCTION_START = /\b(?:async\s+)?function\s+\w+\s*\([^)]*\)\s*(?::\s*[^\{]+)?\s*\{/g;
 
 function sourceLineCount(text: string): number {
   if (!text) return 0;
@@ -72,12 +73,42 @@ export function auditProductSource(files: readonly TextSourceFile[]): AuditIssue
 }
 
 function removeAllowedWorkerFetches(text: string): string {
-  let sanitized = ALLOWED_WORKER_FETCHES.reduce((value, pattern) => value.replace(pattern, ""), text);
-  const hasSameOriginGuard = /new\s+URL\s*\(\s*request\s*\.\s*url\s*\)/.test(text)
-    && /new\s+URL\s*\(\s*path\s*,\s*requestUrl\s*\)/.test(text)
-    && /assetUrl\s*\.\s*origin\s*!==\s*requestUrl\s*\.\s*origin/.test(text);
-  if (hasSameOriginGuard) sanitized = sanitized.replace(SAME_ORIGIN_ASSET_FETCH, "");
-  return sanitized;
+  const sanitizedAssets = removeGuardedAssetFetches(text);
+  return ALLOWED_WORKER_FETCHES.reduce(
+    (value, pattern) => value.replace(pattern, (match) => " ".repeat(match.length)),
+    sanitizedAssets,
+  );
+}
+
+interface FunctionRange {
+  bodyStart: number;
+  bodyEnd: number;
+}
+
+function namedFunctionRanges(text: string): FunctionRange[] {
+  return [...text.matchAll(NAMED_FUNCTION_START)].flatMap((match) => {
+    const bodyStart = match.index + match[0].lastIndexOf("{");
+    let depth = 1;
+    for (let index = bodyStart + 1; index < text.length; index += 1) {
+      if (text[index] === "{") depth += 1;
+      if (text[index] === "}") depth -= 1;
+      if (depth === 0) return [{ bodyStart, bodyEnd: index }];
+    }
+    return [];
+  });
+}
+
+function removeGuardedAssetFetches(text: string): string {
+  const ranges = namedFunctionRanges(text);
+  return text.replace(SAME_ORIGIN_ASSET_FETCH, (match, offset: number) => {
+    const range = ranges.findLast(({ bodyStart, bodyEnd }) => offset > bodyStart && offset < bodyEnd);
+    if (!range) return match;
+    const beforeCall = text.slice(range.bodyStart, offset);
+    const guarded = /new\s+URL\s*\(\s*request\s*\.\s*url\s*\)/.test(beforeCall)
+      && /new\s+URL\s*\(\s*path\s*,\s*requestUrl\s*\)/.test(beforeCall)
+      && /if\s*\(\s*assetUrl\s*\.\s*origin\s*!==\s*requestUrl\s*\.\s*origin\s*\)\s*(?:\{[^}]*\breturn\b|\breturn\b)/s.test(beforeCall);
+    return guarded ? " ".repeat(match.length) : match;
+  });
 }
 
 function hasNullHostingBindings(text: string): boolean {

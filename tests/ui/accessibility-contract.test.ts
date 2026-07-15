@@ -19,6 +19,13 @@ test("phase changes target a visible programmatic heading instead of the outline
   assert.match(summary, /data-stage-heading/);
 });
 
+test("draft and submitted investigation sentences share the particle-neutral domain phrasing", async () => {
+  const investigation = await readFile(new URL("components/InvestigationPanel.tsx", appRoot), "utf8");
+
+  assert.match(investigation, /buildInvestigationOpening/);
+  assert.doesNotMatch(investigation, /focusCharacterName\}이/);
+});
+
 test("mobile header targets keep a 48px touch area", async () => {
   const css = await readFile(new URL("styles/shell.css", appRoot), "utf8");
   assert.match(css, /\.brand\s*\{[^}]*min-height:\s*48px/s);

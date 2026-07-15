@@ -121,6 +121,21 @@ test("investigation sentence joins quoted clues without a hard-coded particle", 
   assert.doesNotMatch(sentence, /”과 “/u);
 });
 
+for (const focusCharacterName of ["지호", "민준"]) {
+  test(`investigation sentence stays particle-neutral for ${focusCharacterName}`, () => {
+    const reading = caseData.reviewedReadings[0];
+    const pair = reading.reviewedEvidencePairs[0].evidenceCardIds;
+    const sentence = buildInvestigationSentence(
+      { mindId: reading.mindId, evidenceCardIds: pair },
+      { ...caseData, focusCharacterName },
+      storyBank.registry,
+    );
+
+    assert.match(sentence, new RegExp(`^나는 ${focusCharacterName}의 마음이 `, "u"));
+    assert.doesNotMatch(sentence, new RegExp(`${focusCharacterName}이 `, "u"));
+  });
+}
+
 test("two different evidence cards of the same kind can be completed", () => {
   const sameKindCards = caseData.evidenceCards.filter((card) => card.kind === "action");
   assert.ok(sameKindCards.length >= 2);

@@ -124,6 +124,13 @@ function validateRationales(review: InferenceReview, caseData: StoryCase, regist
   return review;
 }
 
+export function buildInvestigationOpening(
+  focusCharacterName: string,
+  sentenceForm: string,
+) {
+  return `나는 ${focusCharacterName}의 마음이 ${sentenceForm} 수 있다고 생각해요.`;
+}
+
 export function buildInvestigationSentence(
   inference: CompletedInference,
   caseData: StoryCase,
@@ -135,7 +142,7 @@ export function buildInvestigationSentence(
   const [firstId, secondId] = canonicalizeEvidencePair(inference.evidenceCardIds, caseData);
   const first = deriveEvidenceQuote(caseData, firstId).quote;
   const second = deriveEvidenceQuote(caseData, secondId).quote;
-  return `나는 ${caseData.focusCharacterName}이 ${mind.sentenceForm} 수 있다고 생각해요. “${first}”, “${second}” 두 가지가 단서예요.`;
+  return `${buildInvestigationOpening(caseData.focusCharacterName, mind.sentenceForm)} “${first}”, “${second}” 두 가지가 단서예요.`;
 }
 
 export function getAlternativeReading(

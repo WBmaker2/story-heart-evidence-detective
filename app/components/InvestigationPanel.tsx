@@ -1,4 +1,7 @@
-import { buildInvestigationSentence } from "../domain/inference.ts";
+import {
+  buildInvestigationOpening,
+  buildInvestigationSentence,
+} from "../domain/inference.ts";
 import type {
   CompletedInference,
   ReviewedContentRegistry,
@@ -35,13 +38,17 @@ function DraftSentence({
     (id) => story.evidenceCards.find((card) => card.id === id)?.anchor.exactQuote,
   );
   const complete = mind && evidence.length === 2 && evidence.every(Boolean);
+  const opening = buildInvestigationOpening(
+    story.focusCharacterName,
+    mind?.sentenceForm ?? "______",
+  );
   const sentence = complete
     ? buildInvestigationSentence(
         { mindId: mind.id, evidenceCardIds: [evidenceCardIds[0], evidenceCardIds[1]] },
         story,
         registry,
       )
-    : `나는 ${story.focusCharacterName}이 ${mind?.sentenceForm ?? "______"} 수 있다고 생각해요. “${evidence[0] ?? "첫 번째 단서"}”, “${evidence[1] ?? "두 번째 단서"}”가 단서예요.`;
+    : `${opening} “${evidence[0] ?? "첫 번째 단서"}”, “${evidence[1] ?? "두 번째 단서"}”가 단서예요.`;
   return <p className="draft-sentence">{sentence}</p>;
 }
 

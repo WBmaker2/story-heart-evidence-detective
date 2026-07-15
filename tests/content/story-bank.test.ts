@@ -61,8 +61,8 @@ test("update history keeps the development release and leads with the newest imp
   });
   assert.deepEqual(updateHistory[0], {
     date: "2026-07-15",
-    version: "1.1.3",
+    version: "1.1.4",
     kind: "개선",
-    summary: "사용하지 않는 저장소 예제를 걷어 내고 서버 쿠키와 워커 외부 요청 점검을 더 촘촘하게 했어요.",
+    summary: "수사 문장을 자연스럽게 다듬고 문장별 읽기와 워커 요청 점검을 더 정확하게 했어요.",
   });
 });
