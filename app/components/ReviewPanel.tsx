@@ -35,7 +35,7 @@ export function ReviewPanel({
   onNext,
 }: ReviewPanelProps) {
   const message = getReviewMessage(review);
-  const details = getReviewDetails(review, registry);
+  const details = getReviewDetails(review, story, inference, registry);
   const selectedMind = registry.minds.find((mind) => mind.id === inference.mindId)!;
   const selectedEvidence = inference.evidenceCardIds.map((id) =>
     story.evidenceCards.find((card) => card.id === id)!,
@@ -74,7 +74,7 @@ export function ReviewPanel({
       </div>
 
       <aside className="alternative-reading">
-        <h3>다른 해석도 살펴봤어요</h3>
+        <h3>이 장면의 다른 해석</h3>
         {alternativeSummary ? (
           <>
             <strong>{alternativeSummary.mind.label}</strong>

@@ -27,8 +27,8 @@ function reviewFor(code: ReviewCode): InferenceReview {
     return {
       code,
       readingId: "reading-1",
-      matchedEvidenceCardId: "evidence-1",
-      rationaleId: "why-1",
+      matchedEvidenceCardIds: ["evidence-1"],
+      rationaleIds: ["why-1"],
     };
   }
   return { code };

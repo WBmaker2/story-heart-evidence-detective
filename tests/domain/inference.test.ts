@@ -92,6 +92,46 @@ test("review precedence returns all four deterministic codes", () => {
   assert.equal(insufficient.code, "insufficient-evidence");
 });
 
+test("partial review reports both selected clues when each relates to the chosen mind", () => {
+  const runningStory = storyBank.cases.find((story) => story.id === "second-start-line")!;
+  const dialogue = runningStory.evidenceCards[1].id;
+  const expression = runningStory.evidenceCards[2].id;
+  const review = reviewInference(
+    { mindId: "persevere", evidenceCardIds: [dialogue, expression] },
+    runningStory,
+    storyBank.registry,
+  );
+
+  assert.equal(review.code, "partially-supported");
+  if (review.code === "partially-supported") {
+    assert.deepEqual(review.matchedEvidenceCardIds, [dialogue, expression]);
+  }
+});
+
+test("every partial review reports all selected clues that individually relate to the mind", () => {
+  for (const story of [storyBank.tutorial, ...storyBank.cases]) {
+    for (const mindId of story.candidateMindIds) {
+      const reading = story.reviewedReadings.find((item) => item.mindId === mindId);
+      for (let first = 0; first < story.evidenceCards.length; first += 1) {
+        for (let second = first + 1; second < story.evidenceCards.length; second += 1) {
+          const evidenceCardIds = [story.evidenceCards[first].id, story.evidenceCards[second].id] as const;
+          const review = reviewInference({ mindId, evidenceCardIds }, story, storyBank.registry);
+          if (review.code !== "partially-supported") continue;
+
+          const expected = evidenceCardIds.filter((evidenceId) =>
+            reading?.reviewedEvidencePairs.some((pair) => pair.evidenceCardIds.includes(evidenceId)),
+          );
+          assert.deepEqual(
+            review.matchedEvidenceCardIds,
+            expected,
+            `${story.id} / ${mindId} should report every individually related selected clue`,
+          );
+        }
+      }
+    }
+  }
+});
+
 test("student evidence order does not change review or sentence order", () => {
   const reading = caseData.reviewedReadings[0];
   const pair = reading.reviewedEvidencePairs[1].evidenceCardIds;

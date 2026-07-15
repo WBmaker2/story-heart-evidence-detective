@@ -8,6 +8,12 @@ export interface UpdateHistoryEntry {
 export const updateHistory: readonly UpdateHistoryEntry[] = [
   {
     date: "2026-07-15",
+    version: "1.1.6",
+    kind: "개선",
+    summary: "결과 화면에서 고른 단서와 다른 해석의 관계를 헷갈리지 않도록 설명을 더 분명하게 바꿨어요.",
+  },
+  {
+    date: "2026-07-15",
     version: "1.1.5",
     kind: "개선",
     summary: "인터넷에서 바로 이용할 수 있도록 GitHub Pages 자동 배포를 연결했어요.",

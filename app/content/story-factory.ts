@@ -64,8 +64,8 @@ export function createStory(raw: RawStory): StoryBundle {
         const secondRationaleId = `${pairId}-rationale-2`;
         const pairSummaryId = `${pairId}-summary`;
         explanations.push(
-          { id: firstRationaleId, kind: "evidence-rationale", text: `“${first.anchor.exactQuote}”라는 단서가 이 해석과 이어져요.` },
-          { id: secondRationaleId, kind: "evidence-rationale", text: `“${second.anchor.exactQuote}”라는 단서도 함께 살펴볼 수 있어요.` },
+          { id: firstRationaleId, kind: "evidence-rationale", text: `“${first.anchor.exactQuote}”는 마음을 짐작하는 데 도움이 되는 단서예요.` },
+          { id: secondRationaleId, kind: "evidence-rationale", text: `“${second.anchor.exactQuote}”는 마음을 짐작하는 데 도움이 되는 단서예요.` },
           { id: pairSummaryId, kind: "evidence-pair-summary", text: pair.summary },
         );
         return {

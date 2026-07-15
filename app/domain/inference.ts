@@ -98,16 +98,25 @@ export function reviewInference(
 
   const reading = caseData.reviewedReadings.find((item) => item.mindId === inference.mindId);
   if (reading) {
-    for (const evidencePair of reading.reviewedEvidencePairs) {
-      const overlap = evidencePair.evidenceCardIds.find((id) => pair.includes(id));
-      if (overlap) {
-        const index = evidencePair.evidenceCardIds.indexOf(overlap);
-        const rationaleId = evidencePair.evidenceRationaleIds[index];
-        if (!registry.explanations.some((item) => item.id === rationaleId && item.kind === "evidence-rationale")) {
-          throw new ContentDomainError("invalid-content-reference", caseData.id, rationaleId);
-        }
-        return { code: "partially-supported", readingId: reading.id, matchedEvidenceCardId: overlap, rationaleId };
+    const overlaps = pair.flatMap((evidenceCardId) => {
+      const evidencePair = reading.reviewedEvidencePairs.find((item) =>
+        item.evidenceCardIds.includes(evidenceCardId),
+      );
+      if (!evidencePair) return [];
+      const index = evidencePair.evidenceCardIds.indexOf(evidenceCardId);
+      const rationaleId = evidencePair.evidenceRationaleIds[index];
+      if (!registry.explanations.some((item) => item.id === rationaleId && item.kind === "evidence-rationale")) {
+        throw new ContentDomainError("invalid-content-reference", caseData.id, rationaleId);
       }
+      return [{ evidenceCardId, rationaleId }];
+    });
+    if (overlaps.length) {
+      return {
+        code: "partially-supported",
+        readingId: reading.id,
+        matchedEvidenceCardIds: overlaps.map((item) => item.evidenceCardId) as [string] | [string, string],
+        rationaleIds: overlaps.map((item) => item.rationaleId) as [string] | [string, string],
+      };
     }
   }
   return { code: "insufficient-evidence" };

@@ -90,7 +90,12 @@ export type CompletionResult =
 export interface ReadingPairMatch { readingId: string; evidencePairId: string }
 export type InferenceReview =
   | { code: "supported" | "evidence-link-mismatch"; primaryMatch: ReadingPairMatch; allMatches: readonly [ReadingPairMatch, ...ReadingPairMatch[]]; rationaleIds: readonly [string, string, string] }
-  | { code: "partially-supported"; readingId: string; matchedEvidenceCardId: string; rationaleId: string }
+  | {
+      code: "partially-supported";
+      readingId: string;
+      matchedEvidenceCardIds: readonly [string] | readonly [string, string];
+      rationaleIds: readonly [string] | readonly [string, string];
+    }
   | { code: "insufficient-evidence" };
 export interface CaseRecord { caseId: string; inference: CompletedInference }
 export interface SessionSummaryItem {
