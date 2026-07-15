@@ -18,7 +18,7 @@ export function SummaryScreen({ records, bank, onReset }: SummaryScreenProps) {
       <div className="summary-heading">
         <SearchIcon size={54} />
         <div>
-          <h1 id="summary-title">여섯 편의 사건을 모두 살펴봤어요!</h1>
+          <h1 id="summary-title" data-stage-heading tabIndex={-1}>여섯 편의 사건을 모두 살펴봤어요!</h1>
           <p>{summaryLanguage(summary.length)}</p>
         </div>
       </div>

@@ -11,6 +11,7 @@ import { SummaryScreen } from "../../components/SummaryScreen";
 import { storyBank } from "../../content/story-bank.ts";
 import { completeInference, reviewInference } from "../../domain/inference.ts";
 import type { CompletedInference } from "../../domain/types.ts";
+import { getReadingSegments } from "./reading.ts";
 import { createInitialInvestigationState, investigationReducer } from "./state.ts";
 
 const stageLabels = [
@@ -26,13 +27,14 @@ export function InvestigationApp() {
     undefined,
     createInitialInvestigationState,
   );
-  const mainRef = useRef<HTMLElement>(null);
   const previousStage = useRef(state.stage);
   const story = state.run === "tutorial" ? storyBank.tutorial : storyBank.cases[state.caseIndex];
 
   useEffect(() => {
     if (previousStage.current !== state.stage) {
-      mainRef.current?.focus({ preventScroll: true });
+      document
+        .querySelector<HTMLElement>("[data-stage-heading]")
+        ?.focus({ preventScroll: true });
       previousStage.current = state.stage;
     }
   }, [state.stage, state.caseIndex]);
@@ -54,7 +56,7 @@ export function InvestigationApp() {
   return (
     <div className="app-shell">
       <AppHeader onReset={reset} />
-      <main id="main-content" ref={mainRef} tabIndex={-1}>
+      <main id="main-content">
         {state.stage === "start" ? (
           <StartScreen
             onTutorial={() => dispatch({ type: "start-tutorial" })}
@@ -89,10 +91,10 @@ export function InvestigationApp() {
                 sentenceIndex={state.sentenceIndex}
                 onReadingMode={(mode) => dispatch({ type: "set-reading-mode", mode })}
                 onNextSentence={() => {
-                  const sentences = story.paragraphs.flatMap(
-                    (paragraph) => paragraph.text.match(/[^.!?]+[.!?]?/g) ?? [],
-                  );
-                  dispatch({ type: "next-sentence", finalIndex: sentences.length - 1 });
+                  dispatch({
+                    type: "next-sentence",
+                    finalIndex: getReadingSegments(story).length - 1,
+                  });
                 }}
               />
               {state.stage === "review" && state.review && state.mindId && state.evidenceCardIds.length === 2 ? (

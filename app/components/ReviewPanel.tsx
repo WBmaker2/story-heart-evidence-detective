@@ -49,7 +49,7 @@ export function ReviewPanel({
     <section className="investigation-paper review-paper" aria-labelledby="review-title">
       <div className="case-heading">
         <span className="case-label">{run === "tutorial" ? "연습 사건" : `사건 ${caseIndex + 1} / 6`}</span>
-        <h2 id="review-title">{message.title}</h2>
+        <h2 id="review-title" data-stage-heading tabIndex={-1}>{message.title}</h2>
       </div>
 
       <div className="review-stamp" aria-hidden="true"><SearchIcon size={36} /><span>살펴봄</span></div>

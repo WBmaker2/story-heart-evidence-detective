@@ -74,7 +74,7 @@ export function InvestigationPanel(props: InvestigationPanelProps) {
       {stage === "reading" ? (
         <div className="step-intro">
           <SearchIcon size={48} />
-          <h3>먼저 이야기를 천천히 읽어 보세요</h3>
+          <h3 data-stage-heading tabIndex={-1}>먼저 이야기를 천천히 읽어 보세요</h3>
           <p>밑줄을 긋거나 따로 적지 않아도 괜찮아요. 왼쪽의 장면을 기억해 두면 돼요.</p>
           <button className="button button-primary" type="button" onClick={onContinue}>
             마음 살피러 가기 <ArrowIcon />
@@ -85,7 +85,7 @@ export function InvestigationPanel(props: InvestigationPanelProps) {
       {stage === "mind" ? (
         <>
           <fieldset className="choice-fieldset mind-choices">
-            <legend><span>1</span> 마음 고르기</legend>
+            <legend data-stage-heading tabIndex={-1}><span>1</span> 마음 고르기</legend>
             <p className="field-help">이 장면에서 {story.focusCharacterName}의 마음이나 생각을 하나 골라 보세요.</p>
             <div className="choice-grid">
               {minds.map((mind) => (
@@ -115,7 +115,7 @@ export function InvestigationPanel(props: InvestigationPanelProps) {
             <button className="text-button" type="button" onClick={onEditMind}>마음 다시 고르기</button>
           </div>
           <fieldset className="choice-fieldset evidence-choices">
-            <legend><span>2</span> 단서 2개 고르기 <small>{evidenceCardIds.length} / 2</small></legend>
+            <legend data-stage-heading tabIndex={-1}><span>2</span> 단서 2개 고르기 <small>{evidenceCardIds.length} / 2</small></legend>
             <p className="field-help">행동, 표정, 대사에서 서로 다른 카드 두 장을 고르세요. 같은 종류끼리도 연결할 수 있어요.</p>
             <div className="evidence-grid">
               {story.evidenceCards.map((card) => {

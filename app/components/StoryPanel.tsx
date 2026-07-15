@@ -1,4 +1,5 @@
 import type { StoryCase } from "../domain/types.ts";
+import { getReadingSegments } from "../features/investigation/reading.ts";
 import type { InvestigationStage, ReadingMode } from "../features/investigation/state.ts";
 import { BookIcon } from "./Icons";
 
@@ -11,12 +12,6 @@ interface StoryPanelProps {
   onNextSentence: () => void;
 }
 
-function splitSentences(story: StoryCase) {
-  return story.paragraphs.flatMap((paragraph) =>
-    paragraph.text.match(/[^.!?]+[.!?]?/g)?.map((sentence) => sentence.trim()).filter(Boolean) ?? [],
-  );
-}
-
 export function StoryPanel({
   story,
   stage,
@@ -26,7 +21,7 @@ export function StoryPanel({
   onNextSentence,
 }: StoryPanelProps) {
   const isReading = stage === "reading";
-  const sentences = splitSentences(story);
+  const sentences = getReadingSegments(story);
   const showSingleSentence = isReading && readingMode === "sentence";
 
   return (

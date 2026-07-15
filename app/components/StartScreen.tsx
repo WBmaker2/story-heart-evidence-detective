@@ -10,7 +10,7 @@ export function StartScreen({ onTutorial, onSkipTutorial }: StartScreenProps) {
     <section className="start-screen" aria-labelledby="start-title">
       <div className="start-copy">
         <SearchIcon size={58} className="start-mark" />
-        <h1 id="start-title">마음은 하나로만 읽히지 않아요</h1>
+        <h1 id="start-title" data-stage-heading tabIndex={-1}>마음은 하나로만 읽히지 않아요</h1>
         <p>
           이야기 속 말과 행동, 표정을 단서로 모아 인물의 마음을 짐작해 보세요.
           같은 장면에도 여러 해석이 생길 수 있어요.
