@@ -8,6 +8,12 @@ export interface UpdateHistoryEntry {
 export const updateHistory: readonly UpdateHistoryEntry[] = [
   {
     date: "2026-07-15",
+    version: "1.1.3",
+    kind: "개선",
+    summary: "사용하지 않는 저장소 예제를 걷어 내고 서버 쿠키와 워커 외부 요청 점검을 더 촘촘하게 했어요.",
+  },
+  {
+    date: "2026-07-15",
     version: "1.1.2",
     kind: "개선",
     summary: "개인정보·표현·파일 길이·접근성 계약을 확인하는 출시 전 자동 점검을 보강했어요.",

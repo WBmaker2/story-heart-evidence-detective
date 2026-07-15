@@ -4,7 +4,6 @@ import handler from "vinext/server/app-router-entry";
 
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
-  DB: unknown;
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
@@ -17,6 +16,13 @@ interface Env {
 interface ExecutionContext {
   waitUntil(promise: Promise<unknown>): void;
   passThroughOnException(): void;
+}
+
+async function fetchSameOriginAsset(path: string, request: Request, env: Env): Promise<Response> {
+  const requestUrl = new URL(request.url);
+  const assetUrl = new URL(path, requestUrl);
+  if (assetUrl.origin !== requestUrl.origin) return new Response("Not found", { status: 404 });
+  return env.ASSETS.fetch(new Request(assetUrl));
 }
 
 // Image security config. SVG sources with .svg extension auto-skip the
@@ -32,7 +38,7 @@ const worker = {
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(request, {
-        fetchAsset: (path) => env.ASSETS.fetch(new Request(new URL(path, request.url))),
+        fetchAsset: (path) => fetchSameOriginAsset(path, request, env),
         transformImage: async (body, { width, format, quality }) => {
           const result = await env.IMAGES.input(body).transform(width > 0 ? { width } : {}).output({ format, quality });
           return result.response();

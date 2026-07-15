@@ -1,7 +1,9 @@
-import { auditProductSource, collectSourceFiles, printAuditIssues } from "./release-audit.ts";
+import { auditProductSource, collectReleaseFiles, printAuditIssues } from "./release-audit.ts";
 
-const files = (await collectSourceFiles(process.cwd())).filter((file) =>
-  /^(?:app|public|worker)\//.test(file.path) || /^(?:next|vite)\.config\./.test(file.path),
+const files = (await collectReleaseFiles(process.cwd())).filter((file) =>
+  /^(?:app|public|worker|build|db|examples\/d1|drizzle|types)\//.test(file.path)
+  || /^(?:drizzle|next|vite)\.config\./.test(file.path)
+  || /^(?:package(?:-lock)?\.json|\.openai\/hosting\.json)$/.test(file.path),
 );
 const issues = auditProductSource(files);
 
