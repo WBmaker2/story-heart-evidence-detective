@@ -9,6 +9,7 @@ interface StoryPanelProps {
   readingMode: ReadingMode;
   sentenceIndex: number;
   onReadingMode: (mode: ReadingMode) => void;
+  onPreviousSentence: () => void;
   onNextSentence: () => void;
 }
 
@@ -18,6 +19,7 @@ export function StoryPanel({
   readingMode,
   sentenceIndex,
   onReadingMode,
+  onPreviousSentence,
   onNextSentence,
 }: StoryPanelProps) {
   const isReading = stage === "reading";
@@ -27,7 +29,7 @@ export function StoryPanel({
   return (
     <article className="story-paper" aria-labelledby="story-title">
       <div className="paper-tab"><BookIcon /> 이야기 읽기</div>
-      <h1 id="story-title">{story.title}</h1>
+      <h1 id="story-title" data-story-heading tabIndex={-1}>{story.title}</h1>
       <div className="story-text" aria-live={showSingleSentence ? "polite" : "off"}>
         {showSingleSentence ? (
           <p className="single-sentence">{sentences[sentenceIndex]}</p>
@@ -38,6 +40,14 @@ export function StoryPanel({
 
       {showSingleSentence ? (
         <div className="sentence-controls">
+          <button
+            className="button button-small button-secondary"
+            type="button"
+            onClick={onPreviousSentence}
+            disabled={sentenceIndex <= 0}
+          >
+            이전 문장
+          </button>
           <span>{sentenceIndex + 1} / {sentences.length}</span>
           <button
             className="button button-small button-secondary"

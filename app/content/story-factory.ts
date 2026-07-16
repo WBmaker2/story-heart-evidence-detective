@@ -87,7 +87,7 @@ export function createStory(raw: RawStory): StoryBundle {
       title: raw.title,
       focusCharacterName: raw.focusCharacterName,
       targetMoment: raw.targetMoment,
-      prompt: raw.prompt ?? `${raw.focusCharacterName}의 마음이나 생각을 두 단서로 짐작해 보세요.`,
+      prompt: raw.prompt ?? `${raw.focusCharacterName}의 마음이나 생각을 짐작해 보세요.`,
       originality: {
         origin: "original-for-this-app",
         createdAt: "2026-07-15",

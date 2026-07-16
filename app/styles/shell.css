@@ -39,7 +39,7 @@
 .text-button { padding: 8px 12px; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
 main { width: min(1440px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 40px); }
-[data-stage-heading]:focus { outline: 4px solid var(--focus); outline-offset: 6px; border-radius: 4px; }
+[data-stage-heading]:focus, [data-story-heading]:focus { outline: 4px solid var(--focus); outline-offset: 6px; border-radius: 4px; }
 
 .start-screen {
   display: grid;
@@ -76,7 +76,7 @@ main { width: min(1440px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 40px)
 .start-notebook > .paper-tab { position: absolute; top: 18px; left: -12px; }
 .start-notebook ol { display: grid; gap: 16px; margin: 12px 0 24px; padding: 0; list-style: none; }
 .start-notebook li { display: flex; align-items: flex-start; gap: 14px; }
-.start-notebook li > span, .sentence-box h3 span, .choice-fieldset legend > span {
+.start-notebook li > span {
   display: inline-grid;
   width: 32px;
   height: 32px;
@@ -113,11 +113,15 @@ main { width: min(1440px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 40px)
 .summary-heading h1 { margin: 0 0 8px; font-size: clamp(1.65rem, 4vw, 2.7rem); letter-spacing: -0.04em; }
 .summary-heading p { margin: 0; font-size: 1.12rem; line-height: 1.6; }
 .summary-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 32px 0; padding: 0; list-style: none; }
-.summary-list li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; border: 2px solid rgba(23, 47, 70, 0.35); border-radius: 12px; padding: 14px; background: #fffef9; }
+.summary-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 12px; border: 2px solid rgba(23, 47, 70, 0.35); border-radius: 12px; padding: 14px; background: #fffef9; }
 .summary-number { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--ink); color: var(--white); font-weight: 900; }
 .summary-story strong { display: block; }
-.summary-story > span { color: var(--muted); font-size: 0.84rem; }
-.summary-kinds { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+.summary-details { display: grid; gap: 9px; margin: 12px 0 0; }
+.summary-details div { display: grid; gap: 3px; }
+.summary-details dt { color: var(--muted); font-size: 0.8rem; font-weight: 850; }
+.summary-details dd { margin: 0; line-height: 1.48; }
+.summary-details dd strong { display: inline; }
+.summary-kinds { display: flex; grid-column: 2; flex-wrap: wrap; justify-content: flex-start; gap: 4px; }
 .summary-note { border-left: 8px solid var(--mustard); padding: 14px 18px; background: #fff5d5; }
 .summary-note p { margin: 6px 0 0; line-height: 1.6; }
 .summary-reset { display: flex; width: min(360px, 100%); margin: 28px auto 0; }
@@ -126,7 +130,6 @@ main { width: min(1440px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 40px)
   .start-screen, .case-workspace { grid-template-columns: minmax(0, 1fr); }
   .start-screen { align-content: start; padding-top: 28px; }
   .case-workspace { gap: 22px; }
-  .story-paper { position: static; }
 }
 
 @media (max-width: 640px) {

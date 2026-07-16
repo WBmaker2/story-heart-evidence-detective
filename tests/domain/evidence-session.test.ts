@@ -25,6 +25,10 @@ test("session summary is scoreless and validates records", () => {
   );
   assert.equal(summary.length, 1);
   assert.equal(summary[0].title, caseData.title);
+  assert.equal(summary[0].mindLabel, storyBank.registry.minds.find((mind) => mind.id === reading.mindId)?.label);
+  assert.equal(summary[0].evidenceQuotes[0], caseData.evidenceCards[0].anchor.exactQuote);
+  assert.ok(summary[0].alternativeMindLabel);
+  assert.ok(summary[0].alternativeSummary);
   assert.deepEqual(summary[0].evidenceKinds, ["action", "dialogue"]);
   assert.equal("score" in summary[0], false);
   assert.equal("reviewCode" in summary[0], false);

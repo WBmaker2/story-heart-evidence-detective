@@ -102,8 +102,12 @@ export interface SessionSummaryItem {
   caseId: string;
   title: string;
   mindId: string;
+  mindLabel: string;
   evidenceCardIds: readonly [string, string];
+  evidenceQuotes: readonly [string, string];
   evidenceKinds: readonly EvidenceKind[];
+  alternativeMindLabel: string;
+  alternativeSummary: string;
   notices: readonly string[];
 }
 export interface ValidationIssue { caseId: string; rule: string; detail: string }

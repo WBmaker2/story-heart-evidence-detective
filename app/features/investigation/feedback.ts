@@ -12,7 +12,7 @@ const reviewMessages: Record<Exclude<InferenceReview["code"], "partially-support
   },
   "evidence-link-mismatch": {
     title: "같은 단서에서 다른 마음도 보여요",
-    body: "고른 두 단서를 함께 보면 다른 마음으로도 짐작할 수 있어요. 어떤 마음과 자연스럽게 이어지는지 장면을 다시 살펴보세요.",
+    body: "고른 두 단서를 함께 보면 다른 마음으로도 생각할 수 있어요. 어떤 마음과 자연스럽게 이어지는지 장면을 다시 살펴보세요.",
   },
   "insufficient-evidence": {
     title: "장면을 한 번 더 비춰 볼까요?",
@@ -62,7 +62,7 @@ export function getReviewDetails(
   if (review.code === "evidence-link-mismatch") {
     const alternative = story.reviewedReadings.find((reading) => reading.id === review.primaryMatch.readingId);
     const alternativeMindLabel = alternative ? mindLabel(alternative.mindId, registry) : "다른 마음";
-    return [`고른 두 단서를 함께 보면 ‘${alternativeMindLabel}’이라는 다른 해석도 가능해요.`];
+    return [`고른 두 단서를 함께 보면 ‘${alternativeMindLabel}’이라는 다른 생각도 가능해요.`];
   }
 
   if (review.code === "partially-supported") {
@@ -98,5 +98,5 @@ export function getReadingSummary(
 export const evidenceKindLabels = {
   action: "행동",
   expression: "표정",
-  dialogue: "대사",
+  dialogue: "한 말",
 } as const;

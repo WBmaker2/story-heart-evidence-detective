@@ -13,7 +13,10 @@ test("phase changes target a visible programmatic heading instead of the outline
   ]);
 
   assert.match(app, /querySelector<HTMLElement>\("\[data-stage-heading\]"\)/);
+  assert.match(app, /querySelector<HTMLElement>\("\[data-story-heading\]"\)/);
+  assert.match(app, /scrollIntoView\(\{ block: "start", behavior: "auto" \}\)/);
   assert.doesNotMatch(app, /mainRef\.current\?\.focus/);
+  assert.match(investigation, /data-stage-heading/);
   assert.ok((investigation.match(/data-stage-heading/g) ?? []).length >= 3);
   assert.match(review, /data-stage-heading/);
   assert.match(summary, /data-stage-heading/);
@@ -47,5 +50,7 @@ test("global CSS preserves keyboard, 320px, motion, color, and touch contracts",
   assert.match(globals, /@media \(prefers-reduced-motion:\s*reduce\)/);
   assert.match(globals, /@media \(forced-colors:\s*active\)/);
   assert.match(shell, /@media \(max-width:\s*640px\)/);
+  assert.match(cases, /@media \(max-width:\s*960px\)[\s\S]*\.story-paper\s*\{[^}]*position:\s*static/s);
+  assert.match(cases, /\.story-paper h1\s*\{[^}]*scroll-margin-top:/s);
   assert.match(cases, /@media \(max-width:\s*700px\)[\s\S]*\.choice-grid, \.evidence-grid\s*\{[^}]*grid-template-columns:\s*1fr/s);
 });

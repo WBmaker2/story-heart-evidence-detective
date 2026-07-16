@@ -44,6 +44,7 @@ export type InvestigationAction =
   | { type: "revise" }
   | { type: "next" }
   | { type: "set-reading-mode"; mode: ReadingMode }
+  | { type: "previous-sentence" }
   | { type: "next-sentence"; finalIndex: number }
   | { type: "reset" };
 
@@ -145,6 +146,11 @@ export function investigationReducer(
       return beginCase(state, "case", state.caseIndex + 1);
     case "set-reading-mode":
       return { ...state, readingMode: action.mode, sentenceIndex: 0 };
+    case "previous-sentence":
+      return {
+        ...state,
+        sentenceIndex: Math.max(state.sentenceIndex - 1, 0),
+      };
     case "next-sentence":
       return {
         ...state,
@@ -156,5 +162,5 @@ export function investigationReducer(
 }
 
 export function summaryLanguage(completedCount: number) {
-  return `${completedCount}편의 이야기를 살펴보고, 단서를 모아 다른 해석도 확인했어요.`;
+  return `${completedCount}편의 이야기를 살펴보고, 단서를 모아 다른 생각도 확인했어요.`;
 }

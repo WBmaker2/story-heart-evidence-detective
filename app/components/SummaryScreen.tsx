@@ -29,7 +29,20 @@ export function SummaryScreen({ records, bank, onReset }: SummaryScreenProps) {
             <span className="summary-number">{index + 1}</span>
             <div className="summary-story">
               <strong>{item.title}</strong>
-              <span>다른 해석 확인</span>
+              <dl className="summary-details">
+                <div>
+                  <dt>내가 고른 마음</dt>
+                  <dd>{item.mindLabel}</dd>
+                </div>
+                <div>
+                  <dt>대표 단서</dt>
+                  <dd>“{item.evidenceQuotes[0]}”</dd>
+                </div>
+                <div>
+                  <dt>다른 생각</dt>
+                  <dd><strong>{item.alternativeMindLabel}</strong> — {item.alternativeSummary}</dd>
+                </div>
+              </dl>
             </div>
             <div className="summary-kinds" aria-label={`사용한 단서 종류: ${item.evidenceKinds.map((kind) => evidenceKindLabels[kind]).join(", ")}`}>
               {item.evidenceKinds.map((kind) => (
@@ -42,7 +55,7 @@ export function SummaryScreen({ records, bank, onReset }: SummaryScreenProps) {
 
       <div className="summary-note">
         <strong>수사대가 발견한 것</strong>
-        <p>인물의 마음은 이야기 속 여러 단서로 짐작할 수 있고, 같은 장면에도 다른 해석이 이어질 수 있어요.</p>
+        <p>인물의 마음은 이야기 속 여러 단서로 짐작할 수 있고, 같은 장면에도 다른 생각이 이어질 수 있어요.</p>
       </div>
       <button className="button button-secondary summary-reset" type="button" onClick={onReset}>
         <ResetIcon /> 처음부터

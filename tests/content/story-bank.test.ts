@@ -60,9 +60,9 @@ test("update history keeps the development release and leads with the newest imp
     summary: "이야기 7편과 근거 기반 복수 해석 판정 자료를 처음 만들었어요.",
   });
   assert.deepEqual(updateHistory[0], {
-    date: "2026-07-15",
-    version: "1.1.6",
+    date: "2026-07-16",
+    version: "1.1.8",
     kind: "개선",
-    summary: "결과 화면에서 고른 단서와 다른 해석의 관계를 헷갈리지 않도록 설명을 더 분명하게 바꿨어요.",
+    summary: "모바일 사건 이동과 문장 다시 읽기를 고치고, 쉬운 말과 자세한 활동 기록을 더했어요.",
   });
 });

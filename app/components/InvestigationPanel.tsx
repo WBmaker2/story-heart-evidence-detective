@@ -7,6 +7,7 @@ import type {
   ReviewedContentRegistry,
   StoryCase,
 } from "../domain/types.ts";
+import { getInvestigationStagePrompt } from "../features/investigation/copy.ts";
 import { evidenceKindLabels } from "../features/investigation/feedback.ts";
 import type { InvestigationNotice, InvestigationStage } from "../features/investigation/state.ts";
 import { ArrowIcon, SearchIcon } from "./Icons";
@@ -75,7 +76,7 @@ export function InvestigationPanel(props: InvestigationPanelProps) {
     <section className="investigation-paper" aria-labelledby="investigation-title">
       <div className="case-heading">
         <span className="case-label">{run === "tutorial" ? "연습 사건" : `사건 ${caseIndex + 1} / 6`}</span>
-        <h2 id="investigation-title">{story.prompt}</h2>
+        <h2 id="investigation-title">{getInvestigationStagePrompt(story, stage)}</h2>
       </div>
 
       {stage === "reading" ? (
@@ -92,8 +93,8 @@ export function InvestigationPanel(props: InvestigationPanelProps) {
       {stage === "mind" ? (
         <>
           <fieldset className="choice-fieldset mind-choices">
-            <legend data-stage-heading tabIndex={-1}><span>1</span> 마음 고르기</legend>
-            <p className="field-help">이 장면에서 {story.focusCharacterName}의 마음이나 생각을 하나 골라 보세요.</p>
+            <legend data-stage-heading tabIndex={-1}>마음 고르기</legend>
+            <p className="field-help">지금은 마음이나 생각 하나만 고르면 돼요. 단서는 다음 화면에서 두 장 고를 거예요.</p>
             <div className="choice-grid">
               {minds.map((mind) => (
                 <label className="mind-choice" key={mind.id}>
@@ -122,8 +123,8 @@ export function InvestigationPanel(props: InvestigationPanelProps) {
             <button className="text-button" type="button" onClick={onEditMind}>마음 다시 고르기</button>
           </div>
           <fieldset className="choice-fieldset evidence-choices">
-            <legend data-stage-heading tabIndex={-1}><span>2</span> 단서 2개 고르기 <small>{evidenceCardIds.length} / 2</small></legend>
-            <p className="field-help">행동, 표정, 대사에서 서로 다른 카드 두 장을 고르세요. 같은 종류끼리도 연결할 수 있어요.</p>
+            <legend data-stage-heading tabIndex={-1}>단서 2개 고르기 <small>{evidenceCardIds.length} / 2</small></legend>
+            <p className="field-help">앞에서 고른 마음과 이어지는 서로 다른 단서 카드 두 장을 고르세요. 행동끼리처럼 같은 종류도 괜찮아요.</p>
             <div className="evidence-grid">
               {story.evidenceCards.map((card) => {
                 const checked = evidenceCardIds.includes(card.id);
@@ -141,7 +142,7 @@ export function InvestigationPanel(props: InvestigationPanelProps) {
             </p>
           </fieldset>
           <div className="sentence-box">
-            <h3><span>3</span> 수사 문장</h3>
+            <h3>수사 문장</h3>
             <DraftSentence story={story} registry={registry} mindId={mindId} evidenceCardIds={evidenceCardIds} />
           </div>
           <p className="submit-help" id="submit-help">
@@ -157,7 +158,7 @@ export function InvestigationPanel(props: InvestigationPanelProps) {
               onSubmit({ mindId, evidenceCardIds: [evidenceCardIds[0], evidenceCardIds[1]] });
             }}
           >
-            <SearchIcon /> 검토하기
+            <SearchIcon /> 같이 살펴보기
           </button>
         </>
       ) : null}

@@ -74,7 +74,7 @@ export function ReviewPanel({
       </div>
 
       <aside className="alternative-reading">
-        <h3>이 장면의 다른 해석</h3>
+        <h3>이 장면의 다른 생각</h3>
         {alternativeSummary ? (
           <>
             <strong>{alternativeSummary.mind.label}</strong>
@@ -90,7 +90,7 @@ export function ReviewPanel({
           다시 살펴보기
         </button>
         <button className="button button-primary" type="button" onClick={onNext}>
-          {run === "tutorial" ? "첫 사건 시작" : caseIndex === 5 ? "수사 기록 보기" : "다음 사건"}
+          {run === "tutorial" ? "첫 사건 시작" : caseIndex === 5 ? "내가 살핀 기록 보기" : "다음 사건"}
           <ArrowIcon />
         </button>
       </div>

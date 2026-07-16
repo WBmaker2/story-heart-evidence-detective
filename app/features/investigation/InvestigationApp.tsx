@@ -18,7 +18,7 @@ const stageLabels = [
   ["reading", "이야기 읽기"],
   ["mind", "마음 고르기"],
   ["evidence", "단서 연결"],
-  ["review", "함께 검토"],
+  ["review", "같이 살펴보기"],
 ] as const;
 
 export function InvestigationApp() {
@@ -29,15 +29,26 @@ export function InvestigationApp() {
   );
   const previousStage = useRef(state.stage);
   const story = state.run === "tutorial" ? storyBank.tutorial : storyBank.cases[state.caseIndex];
+  const storyId = state.stage === "start" || state.stage === "summary" ? null : story?.id ?? null;
+  const previousStoryId = useRef<string | null>(null);
 
   useEffect(() => {
+    if (state.stage === "reading" && storyId && previousStoryId.current !== storyId) {
+      const storyHeading = document.querySelector<HTMLElement>("[data-story-heading]");
+      storyHeading?.focus({ preventScroll: true });
+      storyHeading?.scrollIntoView({ block: "start", behavior: "auto" });
+      previousStoryId.current = storyId;
+      previousStage.current = state.stage;
+      return;
+    }
     if (previousStage.current !== state.stage) {
       document
         .querySelector<HTMLElement>("[data-stage-heading]")
         ?.focus({ preventScroll: true });
       previousStage.current = state.stage;
     }
-  }, [state.stage, state.caseIndex]);
+    previousStoryId.current = storyId;
+  }, [state.stage, storyId]);
 
   function submitInference(inference: CompletedInference) {
     if (!story) return;
@@ -90,6 +101,7 @@ export function InvestigationApp() {
                 readingMode={state.readingMode}
                 sentenceIndex={state.sentenceIndex}
                 onReadingMode={(mode) => dispatch({ type: "set-reading-mode", mode })}
+                onPreviousSentence={() => dispatch({ type: "previous-sentence" })}
                 onNextSentence={() => {
                   dispatch({
                     type: "next-sentence",

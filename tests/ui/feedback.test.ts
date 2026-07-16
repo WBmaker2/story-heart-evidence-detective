@@ -38,7 +38,7 @@ test("one related clue names both the connected clue and the clue to reconsider"
   assert.match(details, /운동장 끝을 보며.*다시 살펴보세요/);
 });
 
-test("mismatched evidence names the alternative mind instead of saying this interpretation", () => {
+test("mismatched evidence names the alternative mind with child-friendly wording", () => {
   const inference = {
     mindId: "worried",
     evidenceCardIds: [runningStory.evidenceCards[1].id, runningStory.evidenceCards[3].id],
@@ -47,8 +47,8 @@ test("mismatched evidence names the alternative mind instead of saying this inte
   const details = getReviewDetails(review, runningStory, inference, storyBank.registry).join(" ");
 
   assert.equal(review.code, "evidence-link-mismatch");
-  assert.match(details, /다시 해 보고 싶은 마음.*다른 해석/);
-  assert.doesNotMatch(details, /이 해석/);
+  assert.match(details, /다시 해 보고 싶은 마음.*다른 생각/);
+  assert.doesNotMatch(details, /이 해석|다른 해석/);
 });
 
 test("all generated review details avoid recommending an already selected clue", () => {

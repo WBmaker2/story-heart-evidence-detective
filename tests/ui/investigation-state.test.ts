@@ -120,6 +120,26 @@ for (const code of [
 test("summary language celebrates completion without score or attempt wording", () => {
   const text = summaryLanguage(6);
   assert.match(text, /6편/);
-  assert.match(text, /다른 해석/);
+  assert.match(text, /다른 생각/);
   assert.doesNotMatch(text, /점수|정답|오답|시도|코드/);
+});
+
+test("sentence reading moves backward and forward without leaving its bounds", () => {
+  let state: InvestigationState = {
+    ...createInitialInvestigationState(),
+    stage: "reading",
+    run: "case",
+    readingMode: "sentence",
+    sentenceIndex: 1,
+  };
+
+  state = investigationReducer(state, { type: "previous-sentence" });
+  assert.equal(state.sentenceIndex, 0);
+  state = investigationReducer(state, { type: "previous-sentence" });
+  assert.equal(state.sentenceIndex, 0);
+
+  state = investigationReducer(state, { type: "next-sentence", finalIndex: 2 });
+  state = investigationReducer(state, { type: "next-sentence", finalIndex: 2 });
+  state = investigationReducer(state, { type: "next-sentence", finalIndex: 2 });
+  assert.equal(state.sentenceIndex, 2);
 });
